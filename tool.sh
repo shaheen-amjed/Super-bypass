@@ -32,12 +32,7 @@ echo "====================================="
 # Define lists for fuzzing
 methods=("GET" "POST" "PUT" "DELETE" "HEAD" "OPTIONS" "TRACE" "CONNECT" "PATCH" "FOO" "SEARCH" "PROPFIND" "MKCOL" "COPY" "MOVE" "LOCK" "UNLOCK")
 user_agents=(
-    "Mozilla/5.0 (X11; Linux i686; rv:1.7.13) Gecko/20070322 Kazehakase/0.4.4.1"
     "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0"
-    "curl/7.68.0"
-    "Wget/1.20.3 (linux-gnu)"
-    "python-requests/2.25.1"
 )
 headers=(
     "X-Forwarded-For" "X-Forward-For" "X-Forwarded-Host" "X-Forwarded-Proto"
