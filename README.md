@@ -1,85 +1,108 @@
 # Super-bypass
-HTTP 401/403 Bypass Tool
 
-## Just wait for it 
-A powerful Bash script designed to bypass HTTP 401 Unauthorized and 403 Forbidden status codes using multiple fuzzing techniques. This tool attempts to exploit potential misconfigurations in HTTP methods, headers, paths, User-Agent strings, and protocol versions.
-Features
+Here's a professional `README.md` file for your script:
 
-    HTTP Method Fuzzing: Tries various HTTP methods, including standard and uncommon ones.
-    User-Agent Fuzzing: Tests bypasses by using different User-Agent strings.
-    HTTP Header Fuzzing: Modifies common headers like X-Forwarded-For, Referer, and Authorization.
-    Path Fuzzing: Uses creative path manipulations to test access controls.
-    Protocol Downgrade: Attempts HTTP/1.0 and HTTP/1.1 versions for unexpected server behavior.
-    Color-Coded Output: Displays 200 OK responses in green and other responses in red.
-    Extensive Logging: Outputs all results to a bypass_results.txt file for further analysis.
+---
 
-Prerequisites
+# HTTP 401/403 Bypass Tool
 
-    Curl: Ensure curl is installed on your system. Use the following command to install if it's missing:
+An advanced tool to automate bypass techniques for HTTP 401 and 403 responses. This script leverages multiple methods to test for potential access to restricted resources.
 
-    sudo apt-get install curl
+## Features
 
-Usage
+- **Protocol Bypass:** Use HTTP versions 1.0 and 1.1 for bypass attempts.
+- **HTTP Methods:** Test with various HTTP methods such as `GET`, `POST`, `HEAD`, etc.
+- **Header Manipulation:** Send custom headers to bypass restrictions (e.g., `X-Forwarded-For`, `X-Real-IP`).
+- **User-Agent Spoofing:** Test bypasses using common and custom User-Agent strings.
+- **Encoded Paths:** Attempt to bypass using encoded versions of paths.
+- **Wayback Machine Lookup:** Check if the target URL is archived in the Wayback Machine for historical access points.
 
-    Clone the repository or copy the tool.sh script to your local machine.
-    Make the script executable:
+## Requirements
 
-chmod +x tool.sh
+- **Bash** (Linux/Unix/MacOS shell environment)
+- **Curl** for HTTP requests
+- **jq** for parsing JSON (used for Wayback Machine integration)
 
-Run the script with the following syntax:
+## Installation
 
-    ./tool.sh -u <target_url> -path <target_path>
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/http-bypass-tool.git
+   cd http-bypass-tool
+   ```
 
-Example Command
+2. Ensure dependencies are installed:
+   ```bash
+   sudo apt update && sudo apt install curl jq -y
+   ```
 
-./tool.sh -u https://example.com -path /admin
+3. Make the script executable:
+   ```bash
+   chmod +x tool.sh
+   ```
 
-Parameters
+## Usage
 
-    -u or --url: The base URL of the target.
-    -path or --path: The path to test on the target server.
+### Basic Syntax
 
-Output
+```bash
+bash tool.sh -u <url> -path <path> [options]
+```
 
-    The script displays results in the terminal:
-        Green for HTTP 200 responses.
-        Red for other responses.
-    Detailed results are saved in a file named bypass_results.txt.
+### Options
 
-Example Output
+| Flag/Option         | Description                                                  |
+|---------------------|--------------------------------------------------------------|
+| `-u`, `--url`       | Target URL (e.g., `https://example.com`).                     |
+| `-path`, `--path`   | Path to attempt bypass (e.g., `/403/restricted`).             |
+| `--protocol`        | Use HTTP protocol manipulation (`1.0` and `1.1`).            |
+| `--headers`         | Use custom headers for bypass attempts.                      |
+| `--method`          | Use various HTTP methods (e.g., `GET`, `POST`).              |
+| `--ug`              | Use User-Agent spoofing techniques.                          |
+| `--encode`          | Attempt bypass using encoded paths.                          |
+| `--all`             | Apply all bypass techniques in a single run.                 |
+| `-h`, `--help`      | Display the help message.                                     |
 
-Terminal:
+### Examples
 
-[200 OK] -> Method: POST, Path: /../admin, Protocol: HTTP/1.1
-[403 Forbidden] -> Method: GET, Path: /admin, Protocol: HTTP/1.0
-[200 OK] -> Method: TRACE, Path: /%2e/admin, Protocol: HTTP/1.1
+1. Bypass using encoded paths:
+   ```bash
+   bash tool.sh -u https://example.com -path /restricted --encode
+   ```
 
-File (bypass_results.txt):
+2. Bypass using HTTP methods:
+   ```bash
+   bash tool.sh -u https://example.com -path /admin --method
+   ```
 
-[Method: POST, User-Agent: Mozilla/5.0 (X11; Linux i686; rv:1.7.13) Gecko/20070322 Kazehakase/0.4.4.1, Header: X-Forwarded-For: 127.0.0.1, Path: /../admin, Protocol: HTTP/1.1] -> HTTP 200 OK
-[Method: GET, User-Agent: curl/7.68.0, Header: Referer: /admin, Path: /admin, Protocol: HTTP/1.0] -> HTTP 403 Forbidden
+3. Use all available bypass techniques:
+   ```bash
+   bash tool.sh -u https://example.com -path /secure --all
+   ```
 
-Techniques Used
+4. Include Wayback Machine Lookup:
+   During execution, the tool will ask if you want to check the URL in the Wayback Machine. Enter `y` to proceed or `n` to skip.
 
-    HTTP Methods:
-        Standard: GET, POST, PUT, DELETE, HEAD, OPTIONS, TRACE.
-        Uncommon: FOO, SEARCH, PROPFIND, MKCOL, COPY, MOVE, LOCK, UNLOCK.
+## Output
 
-    User-Agent Strings:
-        Realistic browser and tool-based strings like curl, Python Requests, Firefox, etc.
+Results are saved to a file named `bypass_results.txt` in the current directory. Example output:
+```
+[HTTP 200] -> Method: GET, User-Agent: Mozilla/5.0, Header: X-Forwarded-For: 127.0.0.1, Path: /../restricted, Protocol: HTTP/1.1
+[HTTP 403] -> Method: POST, User-Agent: Mozilla/5.0, Header: , Path: /restricted, Protocol: HTTP/1.0
+```
 
-    Headers:
-        Modified headers such as X-Forwarded-For, Referer, Authorization, and Origin.
+## Contributing
 
-    Path Manipulation:
-        Adds encoded and relative paths like /%2e/admin, /../admin, /..%00/admin.
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -m 'Add feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Open a pull request.
 
-    HTTP Protocols:
-        Uses HTTP/1.1 and downgrades to HTTP/1.0 to test server behavior.
+## Disclaimer
 
-Contributing
+This tool is for **educational purposes only**. Use it only on systems you own or have explicit permission to test. The authors are not responsible for any misuse of this tool.
 
-Contributions are welcome! Feel free to fork the repository, create a new branch, and submit a pull request with your improvements or new techniques.
-Disclaimer
+---
 
-This tool is intended for ethical penetration testing and educational purposes only. Unauthorized use of this tool on systems without proper authorization is illegal and may result in severe consequences.
+Let me know if you need further customization or additional sections!
