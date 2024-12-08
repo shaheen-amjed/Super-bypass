@@ -63,22 +63,27 @@ bash tool.sh -u <url> -path <path> [options]
 
 ### Examples
 
-1. Bypass using encoded paths:
+1.You can use multiple options.
+   ```bash
+   bash tool.sh -u https://example.com -path /403/path --encode --method --protocol
+   ```
+
+2. Bypass using encoded paths:
    ```bash
    bash tool.sh -u https://example.com -path /restricted --encode
    ```
 
-2. Bypass using HTTP methods:
+3. Bypass using HTTP methods:
    ```bash
    bash tool.sh -u https://example.com -path /admin --method
    ```
 
-3. Use all available bypass techniques:
+4. Use all available bypass techniques:
    ```bash
    bash tool.sh -u https://example.com -path /secure --all
    ```
 
-4. Include Wayback Machine Lookup:
+5. Include Wayback Machine Lookup:
    During execution, the tool will ask if you want to check the URL in the Wayback Machine. Enter `y` to proceed or `n` to skip.
 
 ## Output
