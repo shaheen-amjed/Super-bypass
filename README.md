@@ -10,9 +10,9 @@ An advanced tool to automate bypass techniques for HTTP 401 and 403 responses. T
 
 ## Features
 
-- **Protocol Bypass:** Use HTTP versions 1.0 and 1.1 for bypass attempts.
+- **Protocol Bypass:** Use HTTP versions 1.0 and 1.1 and more for bypass attempts.
 - **HTTP Methods:** Test with various HTTP methods such as `GET`, `POST`, `HEAD`, etc.
-- **Header Manipulation:** Send custom headers to bypass restrictions (e.g., `X-Forwarded-For`, `X-Real-IP`).
+- **Header Manipulation:** Send custom headers to bypass restrictions (e.g., `X-Forwarded-For`, `X-Real-IP` `X-Original-Url`, etc).
 - **User-Agent Spoofing:** Test bypasses using common and custom User-Agent strings.
 - **Encoded Paths:** Attempt to bypass using encoded versions of paths.
 - **Wayback Machine Lookup:** Check if the target URL is archived in the Wayback Machine for historical access points.
