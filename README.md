@@ -1,7 +1,5 @@
 # Super-bypass
 
-Here's a professional `README.md` file for your script:
-
 ---
 
 # HTTP 401/403 Bypass Tool
@@ -91,18 +89,10 @@ Results are saved to a file named `bypass_results.txt` in the current directory.
 [HTTP 403] -> Method: POST, User-Agent: Mozilla/5.0, Header: , Path: /restricted, Protocol: HTTP/1.0
 ```
 
-## Contributing
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m 'Add feature'`).
-4. Push to the branch (`git push origin feature-name`).
-5. Open a pull request.
-
 ## Disclaimer
 
 This tool is for **educational purposes only**. Use it only on systems you own or have explicit permission to test. The authors are not responsible for any misuse of this tool.
 
 ---
 
-Let me know if you need further customization or additional sections!
+Happy bypassing!
