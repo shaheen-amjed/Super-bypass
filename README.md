@@ -25,8 +25,8 @@ An advanced tool to automate bypass techniques for HTTP 401 and 403 responses. T
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/http-bypass-tool.git
-   cd http-bypass-tool
+   git clone https://github.com/shaheen101sec/Super-bypass.git
+   cd Super-bypass
    ```
 
 2. Ensure dependencies are installed:
