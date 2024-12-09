@@ -2,7 +2,8 @@
 
 # Advanced HTTP 401/403 Bypass Tool
 # Usage: bash tool.sh -u https://example.com --ug --encode --method
-
+u=$2
+p=$4
 # Default parameters
 url=""
 path=""
@@ -63,8 +64,8 @@ echo "====================================="
 read -p "Do you want to check the URL in Wayback Machine? (y/n): " check_wayback
 if [[ "$check_wayback" =~ ^[Yy]$ ]]; then
     echo "Checking the Wayback Machine for the url, please wait..."
-    wayback_url="https://web.archive.org/cdx/search/cdx?url=$url&output=json"
-    wayback_response=$(curl -s "$wayback_url" | jq -r '.[1][2] // empty' 2>/dev/null)
+    wayback_url="https://web.archive.org/web/0/${u}${p}"
+    wayback_response=$(curl -s -o /dev/null -w "%{http_code}" "$wayback_url")
 
     if [[ -n "$wayback_response" ]]; then
         echo -e "\033[1;32m[+] Wayback URL found: https://web.archive.org/web/$wayback_response/$url\033[0m"
