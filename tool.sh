@@ -78,7 +78,7 @@ else
 fi
 
 # Define lists for fuzzing
-methods=("GET" "POST" "PUT" "DELETE" "FOO" "HEAD" "OPTIONS" "TRACE" "CONNECT" "PATCH")
+methods=("GET" "POST" "PUT" "DELETE" "FOO" "OPTIONS" "TRACE" "CONNECT" "PATCH")
 user_agents=(
     "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
