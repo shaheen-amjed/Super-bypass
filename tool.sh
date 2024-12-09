@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# by shaheen101sec
 # Advanced HTTP 401/403 Bypass Tool
 # Usage: bash tool.sh -u https://example.com --ug --encode --method
 u=$2
@@ -84,7 +85,6 @@ user_agents=(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
     "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801"
     "Mozilla/5.0 (X11; U; Linux i686; en-GB; rv:1.7.6) Gecko/20050405 Epiphany/1.6.1 (Ubuntu) (Ubuntu package 1.0.2)"
-    "Mozilla/5.0 (X11; U; Linux 2.4.2-2 i586; en-US; m18) Gecko/20010131 Netscape6/6.01"
     "Mozilla/5.0 (X11; U; Linux i686; de-AT; rv:1.8.0.2) Gecko/20060309 SeaMonkey/1.0"
 )
 headers=(
@@ -147,10 +147,36 @@ if $use_all || $use_headers; then
 fi
 
 if $use_all || $use_encode; then
-    echo "Testing encoded paths..." >> "$output_file"
+    echo "Testing encoded paths and case permutations..." >> "$output_file"
+    
+    # Test predefined encoded paths
     for p in "${paths[@]}"; do
         send_request "GET" "" "" "" "$p" ""
     done
+
+    # Generate and test capitalization permutations
+    function generate_permutations {
+        word=$1
+        length=${#word}
+        count=$((1 << length)) # 2^length combinations
+
+        for ((i=0; i<count; i++)); do
+            result=""
+            for ((j=0; j<length; j++)); do
+                char="${word:j:1}"
+                if ((i & (1 << j))); then
+                    result+="$char"
+                else
+                    result+="${char^^}" # Toggle case
+                fi
+            done
+            echo "$result"
+        done
+    }
+
+    while IFS= read -r permuted_path; do
+        send_request "GET" "" "" "" "$permuted_path" ""
+    done < <(generate_permutations "$path")
 fi
 
 if $use_all || $use_protocol; then
